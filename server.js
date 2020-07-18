@@ -18,12 +18,13 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
+var getIP = require('ipware')().get_ip;
 
 // your first API endpoint... 
 app.get("/api/whoami", function (req, res) {
   var software = req.headers['user-agent'];
   var language = req.headers['accept-language'];
-  var ip_address = req.connection.remoteAddress;
+  var ip_address = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   res.json({ipaddress: ip_address,language: language,
 software: software});
 });
